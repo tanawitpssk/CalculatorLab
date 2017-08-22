@@ -15,7 +15,7 @@ namespace CPE200Lab1
         private bool hasDot;
         private bool isAllowBack;
         private bool isAfterOperater;
-        private bool isAfterEqual;
+        private bool isAfterPressEqual;
         private string firstOperand;
         private string operate;
 
@@ -25,7 +25,7 @@ namespace CPE200Lab1
             isAllowBack = true;
             hasDot = false;
             isAfterOperater = false;
-            isAfterEqual = false;
+            isAfterPressEqual = false;
         }
 
         private string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
@@ -62,6 +62,7 @@ namespace CPE200Lab1
                     break;
                 case "%":
                     //your code here
+                    return (Convert.ToDouble(firstOperand) * (Convert.ToDouble(secondOperand) / 100)).ToString();
                     break;
             }
             return "E";
@@ -80,7 +81,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -94,6 +95,7 @@ namespace CPE200Lab1
             }
             isAllowBack = true;
             string digit = ((Button)sender).Text;
+
             if(lblDisplay.Text is "0")
             {
                 lblDisplay.Text = "";
@@ -111,20 +113,38 @@ namespace CPE200Lab1
             if (isAfterOperater)
             {
                 return;
-            }
-            operate = ((Button)sender).Text;
-            switch (operate)
+            } operate = ((Button)sender).Text;
+            if (firstOperand != null)
             {
-                case "+":
-                case "-":
-                case "X":
-                case "÷":
-                    firstOperand = lblDisplay.Text;
-                    isAfterOperater = true;
-                    break;
-                case "%":
-                    // your code here
-                    break;
+                string secondOperand = lblDisplay.Text;
+                string result = calculate(operate, firstOperand, secondOperand);
+                if (result is "E" || result.Length > 8)
+                {
+                    lblDisplay.Text = "Error";
+                }
+                else
+                {
+                    lblDisplay.Text = result;
+                }
+                firstOperand = lblDisplay.Text;
+                isAfterOperater = true;
+            }
+            else
+            {
+                switch (operate)
+                {
+                    case "+":
+                    case "-":
+                    case "X":
+                    case "÷":
+                        firstOperand = lblDisplay.Text;
+                        isAfterOperater = true;
+                        break;
+                    case "%":
+                        // your code here
+                        break;
+
+                }
             }
             isAllowBack = false;
         }
@@ -145,7 +165,7 @@ namespace CPE200Lab1
             {
                 lblDisplay.Text = result;
             }
-            isAfterEqual = true;
+            isAfterPressEqual = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -154,7 +174,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -175,7 +195,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -204,7 +224,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 return;
             }
@@ -226,6 +246,11 @@ namespace CPE200Lab1
                     lblDisplay.Text = "0";
                 }
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
