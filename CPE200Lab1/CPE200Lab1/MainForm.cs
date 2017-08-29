@@ -24,7 +24,7 @@ namespace CPE200Lab1
 
         private void resetAll()
         {
-            //firstOperand = null;
+            firstOperand = null;
             lblDisplay.Text = "0";
             isAllowBack = true;
             hasDot = false;
@@ -79,8 +79,12 @@ namespace CPE200Lab1
             if (isAfterOperater)
             {
                 return;
-            } operate = ((Button)sender).Text;
-            if (firstOperand != null)
+            }
+
+            string temp;
+            temp = operate;
+            operate = ((Button)sender).Text;
+            if (firstOperand != null && operate != "%")
             {
                 string secondOperand = lblDisplay.Text;
                 // Call method calculate of an object
@@ -109,6 +113,8 @@ namespace CPE200Lab1
                         isAfterOperater = true;
                         break;
                     case "%":
+                        lblDisplay.Text = engine.calculate(operate, firstOperand, lblDisplay.Text);
+                        operate = temp;
                         // your code here
                         break;
 
